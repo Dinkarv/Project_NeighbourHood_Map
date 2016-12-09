@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Chandigarh City Map</title>
+	<meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="style.css">
+	<script type="text/javascript" src="models.js"></script>
+</head>
+<body>
+	<nav class="options-box">
+		<h1>Welcome to City Chandigarh!</h1>
+		<input placeholder="Search…" type="search" name="q" data-bind="value: query, valueUpdate: 'keyup'" autocomplete="off" style="width:100%;height:3%;border-radius:3px;">
+        <ul data-bind="foreach: obserTitle">
+            <li class="list-box" data-bind="click: $parent.showDetails , text: $data"></li>
+        </ul>
+		<br>
+		<div>
+		<h1>Search For places Nearby</h1>
+		<input id="places-search" type="text" placeholder="Ex: Pizza stores, Hospitals, Fun park, shoping malls etc" style="width:100%;height:20px;border-radius:5px;">
+		<input id="go-places" type="button" value="Go">
+		</div>
+        </br>
+        <h2>wiki Info</h2>
+        <div id="wikiInfo" data-bind="text: wikiInfo"></div>
+		</nav>
+		<main>
+      <a id="menu">
+       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+          <path d="M2 6h20v3H2zm0 5h20v3H2zm0 5h20v3H2z"></path>
+       </svg>
+      </a>
+	<div id="map"></div>
+	</main>
+	<script>
+         /*
+       * Open the drawer when the menu icon is clicked.
+       */
+      var menu = document.querySelector('#menu');
+      var main = document.querySelector('#map');
+      var drawer = document.querySelector('.options-box');
+
+      menu.addEventListener('click', function(e) {
+        drawer.classList.toggle('open');
+        e.stopPropagation();
+      });
+      main.addEventListener('click', function() {
+        drawer.classList.remove('open');
+      });
+    </script>
+	<script type='text/javascript' src='jquery-2.2.3.min.js'></script>
+	<script type="text/javascript" src="knockout-3.4.0.js"></script>
+	<script src="js.js"></script>
+	<script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC0cNUlSbepqEVil3__H2QiyC_8V9s6gF0&v=3&callback=initMap">
+    </script>
+</body>
+</html>
+		
