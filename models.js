@@ -1,7 +1,7 @@
 
 var map;
 var markers = [];
-
+var placeMarkers = [];
 var locations =  [
           {title: 'Rose Garden', coordinates: {lat: 30.7461,lng: 76.7820}, wiki:' '},
           {title: 'Rock Garden', coordinates: {lat: 30.7525, lng:  76.8101},wiki:' '},

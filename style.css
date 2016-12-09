@@ -19,6 +19,10 @@
       nav, main {
         box-sizing: border-box;
       }
+	  #hide-listings,
+      #show-listings {
+        width: 48%;
+      }
 
    h1 {
         color: #525454;

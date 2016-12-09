@@ -10,6 +10,11 @@ function initMap() {
 var infowindow = new google.maps.InfoWindow();
 	var defaultIcon = makeMarkerIcon("0091ff");
 	var highlightedIcon = makeMarkerIcon("FFFF24");
+		
+		var searchBox = new google.maps.places.SearchBox(
+		document.getElementById('places-search'));
+		searchBox.setBounds(map.getBounds());
+
 	
         // The following group uses the coordinates array to create an array of markers on initialize.
         for (var i =0; i < locations.length; i++) {
@@ -32,6 +37,12 @@ var infowindow = new google.maps.InfoWindow();
 	marker.addListener('mouseout',function(){
 	this.setIcon(defaultIcon);
 	});
+	searchBox.addListener('places_changed',function(){
+	searchBoxPlaces(this);
+	});
+	document.getElementById('go-places').addEventListener('click',textSearchPlaces);
+	
+	
           // Create an onclick event to open an infowindow at each marker.
           marker.addListener('click', function() {
 			   var sel = this;
@@ -52,8 +63,77 @@ var infowindow = new google.maps.InfoWindow();
           markers[i].setMap(map);
           bounds.extend(markers[i].position);
         }
-        map.fitBounds(bounds);
+        
+		
+		document.getElementById('show-listings').addEventListener('click', showListings);
+	document.getElementById('hide-listings').addEventListener('click', hideMarkers);
       };
+	  
+	  function searchBoxPlaces(searchBox){
+	hideMarkers(placeMarkers);
+	var places = searchBox.getPlaces();
+	if(places.length == 0){
+	window.alert('we did not find your selected place');
+	}
+	}
+	
+	function textSearchPlaces(){
+		var bounds = map.getBounds();
+		hideMarkers(placeMarkers);
+		var placesService = new google.maps.places.PlacesService(map);
+		placesService.textSearch({
+		query: document.getElementById('places-search').value,
+		bounds: bounds
+	}, function(results, status){
+	if(status == google.maps.places.PlacesServiceStatus.OK){
+	createMarkersForPlaces(results);
+	}
+	});
+	}
+	
+	function createMarkersForPlaces(places){
+	var bounds = new google.maps.LatLngBounds();
+	for(var i=0; i < places.length; i++){
+	var place = places[i];
+	var icon = {
+	url: place.icon,
+	size: new google.maps.Size(35, 35),
+	origin: new google.maps.Point(0,0),
+	anchor: new google.maps.Point(15,34),
+	scaledSize: new google.maps.Size(25,25)
+	};
+		var marker = new google.maps.Marker({
+	map: map,
+	icon: icon,
+	title: place.name,
+	position: place.geometry.location,
+	id: place.id
+	});
+	placeMarkers.push(marker);
+	if(place.geometry.viewport){
+	bounds.union(place.geometry.viewport);
+	}else{
+	bounds.extend(place.geometry.location);
+	}
+	}
+	map.fitBounds(bounds);
+	}
+	
+	function showListings(){
+		var bounds = new google.maps.LatLngBounds();
+
+		for(var i=0; i< markers.length; i++){
+		markers[i].setMap(map);
+		bounds.extend(markers[i].position);
+		}
+		map.fitBounds(bounds);
+	}
+	
+	function hideMarkers(markers){
+	for(var i=0; i < markers.length; i++){
+	markers[i].setMap(null);
+	}
+	}
 	  //toggle function to give bounce animation when ever list or marker is clicked
       function toggleBounce(marker) {
         if (marker.getAnimation() !== null) {
