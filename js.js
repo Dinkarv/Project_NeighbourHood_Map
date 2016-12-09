@@ -1,4 +1,12 @@
-		  		
+
+
+
+
+
+
+
+
+												//***Various Functions***//
 function initMap() {
 // Constructor creates a new map - only center and zoom are required.
 		map = new google.maps.Map(document.getElementById('map'), {
@@ -8,20 +16,20 @@ function initMap() {
 		mapTypeControl: false});
 
 var infowindow = new google.maps.InfoWindow();
+//creating markers images and styles..
 	var defaultIcon = makeMarkerIcon("0091ff");
 	var highlightedIcon = makeMarkerIcon("FFFF24");
-		
+		//Search box is created for various searches in the city..
 		var searchBox = new google.maps.places.SearchBox(
 		document.getElementById('places-search'));
 		searchBox.setBounds(map.getBounds());
 
 	
-        // The following group uses the coordinates array to create an array of markers on initialize.
         for (var i =0; i < locations.length; i++) {
 		  // Get the position from the coordinates array.
           var position = locations[i].coordinates;
           var title = locations[i].title;
-          // Create a marker per coordinates, and put into markers array.
+          // Marker is created for each coordinate to detail it..
           var marker = new google.maps.Marker({
             icon: defaultIcon,
             position: position,
@@ -29,21 +37,23 @@ var infowindow = new google.maps.InfoWindow();
             animation: google.maps.Animation.DROP,
             id: i
           });
-          // Push the marker to our array of markers.
+          // Creating Markers..
           markers.push(marker);
+		  //Creating mouseover marker image..
 	  marker.addListener('mouseover', function(){
 	this.setIcon(highlightedIcon);
 	});
+	//Creating markerout images..
 	marker.addListener('mouseout',function(){
 	this.setIcon(defaultIcon);
 	});
 	searchBox.addListener('places_changed',function(){
 	searchBoxPlaces(this);
 	});
-	document.getElementById('go-places').addEventListener('click',textSearchPlaces);
+	//document.getElementById('go-places').addEventListener('click',textSearchPlaces);
 	
 	
-          // Create an onclick event to open an infowindow at each marker.
+          // Onclick event to open infowindow on each marker..
           marker.addListener('click', function() {
 			   var sel = this;
            populateInfoWindow(this, infowindow);
@@ -65,10 +75,12 @@ var infowindow = new google.maps.InfoWindow();
         }
         
 		
-		document.getElementById('show-listings').addEventListener('click', showListings);
+		//document.getElementById('show-listings').addEventListener('click', showListings);
 	document.getElementById('hide-listings').addEventListener('click', hideMarkers);
+	//document.getElementById('hide-listings').addEventListener('click', hideListings);
       };
 	  
+	  //Function to find the selected place in the search box...
 	  function searchBoxPlaces(searchBox){
 	hideMarkers(placeMarkers);
 	var places = searchBox.getPlaces();
@@ -77,20 +89,7 @@ var infowindow = new google.maps.InfoWindow();
 	}
 	}
 	
-	function textSearchPlaces(){
-		var bounds = map.getBounds();
-		hideMarkers(placeMarkers);
-		var placesService = new google.maps.places.PlacesService(map);
-		placesService.textSearch({
-		query: document.getElementById('places-search').value,
-		bounds: bounds
-	}, function(results, status){
-	if(status == google.maps.places.PlacesServiceStatus.OK){
-	createMarkersForPlaces(results);
-	}
-	});
-	}
-	
+	//Creating markers for places.......
 	function createMarkersForPlaces(places){
 	var bounds = new google.maps.LatLngBounds();
 	for(var i=0; i < places.length; i++){
@@ -109,6 +108,7 @@ var infowindow = new google.maps.InfoWindow();
 	position: place.geometry.location,
 	id: place.id
 	});
+	//tiredof writing comments for each line.....
 	placeMarkers.push(marker);
 	if(place.geometry.viewport){
 	bounds.union(place.geometry.viewport);
@@ -118,23 +118,14 @@ var infowindow = new google.maps.InfoWindow();
 	}
 	map.fitBounds(bounds);
 	}
-	
-	function showListings(){
-		var bounds = new google.maps.LatLngBounds();
-
-		for(var i=0; i< markers.length; i++){
-		markers[i].setMap(map);
-		bounds.extend(markers[i].position);
-		}
-		map.fitBounds(bounds);
-	}
-	
+	//Hidemarker funciton to hide markers......
+//working with hideMarker function() but hidemarkers then 
 	function hideMarkers(markers){
 	for(var i=0; i < markers.length; i++){
 	markers[i].setMap(null);
 	}
-	}
-	  //toggle function to give bounce animation when ever list or marker is clicked
+}
+	  //Bounce function to give bounce to marker when clicked......
       function toggleBounce(marker) {
         if (marker.getAnimation() !== null) {
           marker.setAnimation(null);
@@ -142,7 +133,7 @@ var infowindow = new google.maps.InfoWindow();
           marker.setAnimation(google.maps.Animation.BOUNCE);
         }
       }
-//function to alert the user that map is not available or key is wrong
+//fxn to alert tht internet connection is not write or something is wrong with google map api's...............
       function googleError(){
         alert("Map is unable to load ");
     }
@@ -159,41 +150,44 @@ var infowindow = new google.maps.InfoWindow();
 	 
       // This function populates the infowindow when the marker is clicked. We'll only allow
       // one infowindow which will open at the marker that is clicked, and populate based
-      // on that markers position.
+      // on that markers position................
       function populateInfoWindow(marker, infowindow) {
-        // Check to make sure the infowindow is not already opened on this marker.
+        // Check to make sure the infowindow is not already opened on this marker......//
         if (infowindow.marker != marker) {
           infowindow.marker = marker;
           infowindow.setContent('<div>' + marker.title + '</div>');
           infowindow.open(map, marker);
-          // Make sure the marker property is cleared if the infowindow is closed.
+          // to make sure if marker is cleared....//
           infowindow.addListener('closeclick',function(){
             infowindow.setContent(null);
           });
         }
       };
+																		//VIEWMODEL//
 	  
 	  var viewmodel = {
-    //Saving the reference of 'this' to another variable self
-    //observable array to save title from normal array
-    obserTitle : ko.observableArray(['Rose Garden','Rock Garden','Chandigarh Museum','Indian Coffee House','Sukhna Lake','Elante Mall','PGI']),
+    //observable array is used here to store data from normal array..
+    obserTitle : ko.observableArray(['Rock Garden','Zakir Hussain Rose Garden','Japanese Garden','Indian Coffee House','Sukhna Lake','Elante Mall','Postgraduate Institute of Medical Education and Research','Panjab University']),
 
-    obserTitle1 : ['Rose Garden','Rock Garden','Chandigarh Museum','Indian Coffee House','Sukhna Lake','Elante Mall','PGI'],
-
+    obserTitle1 : ['Rock Garden','Zakir Hussain Rose Garden','Japanese Garden','Indian Coffee House','Sukhna Lake','Elante Mall','Postgraduate Institute of Medical Education and Research','Panjab University'],
+//knockout is used to observ on wikiInfo..
     wikiInfo : ko.observable(''),
-  //Fetch info from wiki pages using jsonp
+	
+//getting data from wikipedia..
+//concept from the class videos tutorial..
    getWikiInfo : function(data){
-      // load wikipedia data
+    
+// URL of wikipedia to load data..
     var wikiUrl = 'http://en.wikipedia.org/w/api.php?action=opensearch&search=' + data + '&format=json&callback=wikiCallback';
 
-     //Print message in dialogue box that wikipedia is failed to load resources
+//If wikipedia couldnot load the data then failure message is shown..
     var wikiRequestTimeout = setTimeout(function(){
-        alert("failed to get wikipedia resources");
+        alert("TimeOut!! Couldnot fetch data from wikipedia");
    }, 8000);
       $.ajax({
         url: wikiUrl,
         dataType: "jsonp",
-        jsonp: "callback",
+        //jsonp: "callback",
         success: function( response ) {
             var articleList = response[2];
             viewmodel.wikiInfo(articleList[0]);
@@ -202,7 +196,43 @@ var infowindow = new google.maps.InfoWindow();
     });
 },
 
-//shows the details by fetching the info from wiki api and by invoking the click event
+//shows the markers when clicked on this button..
+show_listings: 	function(){
+		var bounds = new google.maps.LatLngBounds();
+
+		for(var i=0; i< markers.length; i++){
+		markers[i].setMap(map);
+		bounds.extend(markers[i].position);
+		}
+		map.fitBounds(bounds);
+	},
+	
+hide_listings: 
+//button function to hide markers..
+	function (){
+	for(var i=0; i < markers.length; i++){
+	markers[i].setMap(null);
+	}
+},	
+
+	
+	//button function which clicked goes to selected places..
+	go_places: function(){
+		var bounds = map.getBounds();
+		hideMarkers(placeMarkers);
+		var placesService = new google.maps.places.PlacesService(map);
+		placesService.textSearch({
+		query: document.getElementById('places-search').value,
+		bounds: bounds
+	}, function(results, status){
+	if(status == google.maps.places.PlacesServiceStatus.OK){
+	createMarkersForPlaces(results);
+	}
+	});
+	},
+	
+
+//wiki info is shown in this by fetching from website..
   showDetails : function(data){
     var click = 0;
   var largeInfo = new google.maps.InfoWindow();
@@ -221,20 +251,24 @@ var infowindow = new google.maps.InfoWindow();
 },
 
 //num variable to store response from input
- query : ko.observable(''),
+//query observes the input from user..
+//which is stored in value as value: q
+//concept understood from knockout website..
+ q : ko.observable(''),
 
-//Filter function to filter the list and markers on map
+//Filter function to filter the list and markers on map..
  search : function(value) {
 
-// preparing regular expression by concatinating with experssions
+// concatinating the xpression wid value..
     var num = "^"+value+".*$";
 
-//Converting num variable into regular expression
-    var re = new RegExp(num,'i');
+//to perform search matching purposes..
+//w3schools.com for reference..
+    var rx = new RegExp(num,'i');
     viewmodel.obserTitle.removeAll();
-//Refining results
+//fucntion is applied for refinement..
     for(var i = 0 ; i < viewmodel.obserTitle1.length ; i++){
-      if(viewmodel.obserTitle1[i].match(re)) {
+      if(viewmodel.obserTitle1[i].match(rx)) {
         viewmodel.obserTitle.push(viewmodel.obserTitle1[i]);
         markers[i].setVisible(true);
       }
@@ -246,6 +280,6 @@ var infowindow = new google.maps.InfoWindow();
 };
 
 
-viewmodel.query.subscribe(viewmodel.search);
+viewmodel.q.subscribe(viewmodel.search);
 //Binding values for knockout library
 ko.applyBindings(viewmodel);

@@ -11,19 +11,19 @@
 	<nav class="options-box">
 		<h1>Welcome to City Chandigarh!</h1>
 	<div>
-		<input id="show-listings" type="button" value="show-listings">
-		<input id="hide-listings" type="button" value="hide-listings">
+		<input id="show-listings" type="button" data-bind="click: show_listings" value="show-listings">
+		<input id="hide-listings" data-bind="click: hide_listings" type="button"  value="hide-listings">
 	</div>
-		<input placeholder="Search…" type="search" name="q" data-bind="value: query, valueUpdate: 'keyup'" autocomplete="off" style="width:100%;height:3%;border-radius:3px;">
+		<input placeholder="Search…" type="search" name="q" data-bind="value: q, valueUpdate: 'keyup'" autocomplete="off" style="width:100%;height:3%;border-radius:3px;">
         <ul data-bind="foreach: obserTitle">
             <li class="list-box" data-bind="click: $parent.showDetails , text: $data"></li>
         </ul>
 		<br>
 		<div>
 		<h1>Search For places Nearby</h1>
-		<input id="places-search" type="text" placeholder="Ex: Pizza stores, Hospitals, Fun park, shoping malls etc" style="width:100%;height:20px;border-radius:5px;">
+		<input id="places-search" type="search" autocomplete="on" placeholder="Ex: Pizza stores, Hospitals, Fun park, shoping malls etc" style="width:100%;height:20px;border-radius:5px;">
 		</br>
-		<input id="go-places" type="button" value="Go">
+		<input id="go-places" type="button" data-bind="click: go_places" value="Go">
 		</div>
         </br>
         <h2>wiki Info</h2>
