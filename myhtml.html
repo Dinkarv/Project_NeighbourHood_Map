@@ -4,60 +4,79 @@
 	<title>Chandigarh City Map</title>
 	<meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
     <meta charset="utf-8">
-    <link rel="stylesheet" href="style.css">
-	<script type="text/javascript" src="models.js"></script>
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/sidebar.css">
+    <link rel="stylesheet" href="css/font-awesome.css">
+	<link rel="stylesheet" href="css/style.css">
+	<script type="text/javascript" src="js/models.js"></script>	
 </head>
 <body>
-	<nav class="options-box">
-		<h1>Welcome to City Chandigarh!</h1>
-	<div>
-		<input id="show-listings" type="button" data-bind="click: show_listings" value="show-listings">
-		<input id="hide-listings" data-bind="click: hide_listings" type="button"  value="hide-listings">
-	</div>
-		<input placeholder="Search…" type="search" name="q" data-bind="value: q, valueUpdate: 'keyup'" autocomplete="off" style="width:100%;height:3%;border-radius:3px;">
-        <ul data-bind="foreach: obserTitle">
-            <li class="list-box" data-bind="click: $parent.showDetails , text: $data"></li>
-        </ul>
-		<br>
-		<div>
-		<h1>Search For places Nearby</h1>
-		<input id="places-search" type="search" autocomplete="on" placeholder="Ex: Pizza stores, Hospitals, Fun park, shoping malls etc" style="width:100%;height:20px;border-radius:5px;">
-		</br>
-		<input id="go-places" type="button" data-bind="click: go_places" value="Go">
-		</div>
-        </br>
-        <h2>wiki Info</h2>
-        <div id="wikiInfo" data-bind="text: wikiInfo"></div>
-		</nav>
-		<main>
-      <a id="menu">
-       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-          <path d="M2 6h20v3H2zm0 5h20v3H2zm0 5h20v3H2z"></path>
-       </svg>
-      </a>
-	<div id="map"></div>
-	</main>
-	<script>
-         /*
-       * Open the drawer when the menu icon is clicked.
-       */
-      var menu = document.querySelector('#menu');
-      var main = document.querySelector('#map');
-      var drawer = document.querySelector('.options-box');
+<div id="wrapper">
+  <!-- Sidebar -->
+        <div id="sidebar-wrapper">
+            <ul class="sidebar-nav">
+                <li class="sidebar-brand">
+                    <a href="#">
+                        <h1>Chandigarh City Map</h1>
+                    </a>
+                </li>
+                <li>					
+                    <input id="show-listings" type="button" data-bind="click: show_listings" class="btn btn-success" value="show-listings">
+					<input id="hide-listings" data-bind="click: hide_listings" type="button" class="btn btn-success"  value="hide-listings">
+                </li>
+                <li>
+                    <input placeholder="Search…" type="search" name="q" data-bind="value: q, valueUpdate: 'keyup'" autocomplete="off" class="form-control mt-10">
+					<ul data-bind="foreach: obserTitle" class="text-default unstyled">
+						<li class="list-box" data-bind="click: $parent.showDetails , text: $data"></li>
+					</ul>
+                </li>
+                <li>
+                    <div class="pull-left">
+					<h1>Search For places Nearby</h1>
+					<input id="places-search" type="search" autocomplete="on" placeholder="Ex: Dominoe's, Hospitals, Police station etc" class="form-control">
+					<input id="go-places" type="button" data-bind="click: go_places" value="Go" class="btn btn-success mt-10">
+					</div>
+                </li>
+				<li>
+					    <h2>wiki Info</h2>
+						<div id="wikiInfo" data-bind="text: wikiInfo"></div>
+				</li>
+            </ul>
+        </div>
+        <!-- /#sidebar-wrapper -->
 
-      menu.addEventListener('click', function(e) {
-        drawer.classList.toggle('open');
-        e.stopPropagation();
-      });
-      main.addEventListener('click', function() {
-        drawer.classList.remove('open');
-      });
+        <!-- Page Content -->
+        <div id="page-content-wrapper">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+                       <main> 
+						<div class="toggle_menu mb-20">
+							<a href="#menu-toggle" class="btn btn-default" id="menu-toggle"><i class="fa fa-bars" aria-hidden="true"></i></a>
+						</div>
+							<div id="map">
+							</div>
+						</main>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /#page-content-wrapper -->
+</div>
+    <!-- /#wrapper -->
+	
+	<script type='text/javascript' src='js/jquery-2.2.3.min.js'></script>
+	<script type='text/javascript' src='js/bootstrap.js'></script>
+	<script type="text/javascript" src="js/knockout-3.4.0.js"></script>
+	<script type="text/javascript" src="js/js.js"></script>
+	<script>
+    $("#menu-toggle").click(function(e) {
+        e.preventDefault();
+        $("#wrapper").toggleClass("toggled");
+    });
     </script>
-	<script type='text/javascript' src='jquery-2.2.3.min.js'></script>
-	<script type="text/javascript" src="knockout-3.4.0.js"></script>
-	<script src="js.js"></script>
 	<script async defer
-        src="https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyC0cNUlSbepqEVil3__H2QiyC_8V9s6gF0&v=3&callback=initMap">
+         src="https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyC0cNUlSbepqEVil3__H2QiyC_8V9s6gF0&v=3&callback=initMap">
     </script>
 </body>
 </html>

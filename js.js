@@ -1,11 +1,4 @@
 
-
-
-
-
-
-
-
 												//***Various Functions***//
 function initMap() {
 // Constructor creates a new map - only center and zoom are required.
@@ -16,7 +9,7 @@ function initMap() {
 		mapTypeControl: false});
 
 var infowindow = new google.maps.InfoWindow();
-//creating markers images and styles..
+//creating marker images and styles..
 	var defaultIcon = makeMarkerIcon("0091ff");
 	var highlightedIcon = makeMarkerIcon("FFFF24");
 		//Search box is created for various searches in the city..
@@ -227,6 +220,10 @@ hide_listings:
 	}, function(results, status){
 	if(status == google.maps.places.PlacesServiceStatus.OK){
 	createMarkersForPlaces(results);
+	}
+	//But this doesnot work....
+	else{
+		alert("Enter a valid ");
 	}
 	});
 	},
