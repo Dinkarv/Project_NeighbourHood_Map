@@ -1,83 +1,83 @@
 <!DOCTYPE html>
 <html>
-<head>
-	<title>Chandigarh City Map</title>
-	<meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
-    <meta charset="utf-8">
-    <link rel="stylesheet" href="css/bootstrap.css">
-    <link rel="stylesheet" href="css/sidebar.css">
-    <link rel="stylesheet" href="css/font-awesome.css">
-	<link rel="stylesheet" href="css/style.css">
-	<script type="text/javascript" src="js/models.js"></script>	
-</head>
-<body>
-<div id="wrapper">
-  <!-- Sidebar -->
-        <div id="sidebar-wrapper">
-            <ul class="sidebar-nav">
-                <li class="sidebar-brand">
-                    <a href="#">
-                        <h1>Chandigarh City Map</h1>
-                    </a>
-                </li>
-                <li>					
-                    <input id="show-listings" type="button" data-bind="click: show_listings" class="btn btn-success" value="show-listings">
-					<input id="hide-listings" data-bind="click: hide_listings" type="button" class="btn btn-success"  value="hide-listings">
-                </li>
-                <li>
-                    <input placeholder="Search…" type="search" name="q" data-bind="value: q, valueUpdate: 'keyup'" autocomplete="off" class="form-control mt-10">
-					<ul data-bind="foreach: obserTitle" class="text-default unstyled">
-						<li class="list-box" data-bind="click: $parent.showDetails , text: $data"></li>
-					</ul>
-                </li>
-                <li>
-                    <div class="pull-left">
-					<h1>Search For places Nearby</h1>
-					<input id="places-search" type="search" autocomplete="on" placeholder="Ex: Dominoe's, Hospitals, Police station etc" class="form-control">
-					<input id="go-places" type="button" data-bind="click: go_places" value="Go" class="btn btn-success mt-10">
-					</div>
-                </li>
-				<li>
-					    <h2>wiki Info</h2>
-						<div id="wikiInfo" data-bind="text: wikiInfo"></div>
-				</li>
-            </ul>
-        </div>
-        <!-- /#sidebar-wrapper -->
 
-        <!-- Page Content -->
-        <div id="page-content-wrapper">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-lg-12">
-                       <main> 
-						<div class="toggle_menu mb-20">
-							<a href="#menu-toggle" class="btn btn-default" id="menu-toggle"><i class="fa fa-bars" aria-hidden="true"></i></a>
-						</div>
-							<div id="map">
-							</div>
-						</main>
+    <head>
+        <title>Chandigarh City Map</title>
+        <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="css/bootstrap.css">
+        <link rel="stylesheet" href="css/sidebar.css">
+        <link rel="stylesheet" href="css/font-awesome.css">
+        <link rel="stylesheet" href="css/style.css">
+        <script type="text/javascript" src="js/models.js"></script>
+    </head>
+
+    <body>
+        <div id="wrapper">
+            <!-- Sidebar -->
+            <div id="sidebar-wrapper">
+                <ul class="sidebar-nav">
+                    <li class="sidebar-brand">
+                        <a href="#">
+                            <h1>Chandigarh City Map</h1>
+                        </a>
+                    </li>
+                    <li>
+                        <input id="show-listings" type="button" data-bind="click: show_listings" class="btn btn-success" value="show-listings">
+                        <input id="hide-listings" data-bind="click: hide_listings, hide_markers	" type="button" class="btn btn-success" value="hide-listings">
+                    </li>
+                    <li>
+                        <input placeholder="Search…" type="search" name="q" data-bind="value: q, valueUpdate: 'keyup'" autocomplete="off" class="form-control mt-10">
+                        <ul data-bind="foreach: obserTitle" class="text-default unstyled">
+                            <li class="list-box" data-bind="click: $parent.fltr_name , text: $data"></li>
+                        </ul>
+                    </li>
+                    
+                    <li>
+                        <h2>Know from Wiki:</h2>
+                        <div id="wikiInfo" data-bind="text: wikiInfo"></div>
+                    </li>
+                </ul>
+            </div>
+            <!-- /#sidebar-wrapper -->
+
+            <!-- Page Content -->
+            <div id="page-content-wrapper">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <main>
+                                <div class="toggle_menu mb-20">
+                                    <a href="#menu-toggle" class="btn btn-default" id="menu-toggle"><i class="fa fa-bars" aria-hidden="true"></i></a>
+                                </div>
+                                <div id="map">
+                                </div>
+                            </main>
+                        </div>
                     </div>
                 </div>
             </div>
+            <!-- /#page-content-wrapper -->
         </div>
-        <!-- /#page-content-wrapper -->
-</div>
-    <!-- /#wrapper -->
-	
-	<script type='text/javascript' src='js/jquery-2.2.3.min.js'></script>
-	<script type='text/javascript' src='js/bootstrap.js'></script>
-	<script type="text/javascript" src="js/knockout-3.4.0.js"></script>
-	<script type="text/javascript" src="js/js.js"></script>
-	<script>
-    $("#menu-toggle").click(function(e) {
-        e.preventDefault();
-        $("#wrapper").toggleClass("toggled");
-    });
-    </script>
-	<script async defer
-         src="https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyC0cNUlSbepqEVil3__H2QiyC_8V9s6gF0&v=3&callback=initMap">
-    </script>
-</body>
+        <!-- /#wrapper -->
+
+        <script type='text/javascript' src='js/jquery-2.2.3.min.js'></script>
+        <script type='text/javascript' src='js/bootstrap.js'></script>
+        <script type="text/javascript" src="js/knockout-3.4.0.js"></script>
+        <script type="text/javascript" src="js/js.js"></script>
+        <script>
+        $("#menu-toggle")
+            .click(function (e) {
+                e.preventDefault();
+                $("#wrapper")
+                    .toggleClass("toggled");
+            });
+
+        </script>
+        <script async defer src="https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyC0cNUlSbepqEVil3__H2QiyC_8V9s6gF0&v=3&callback=initMap" onerror="googleError()">
+
+
+        </script>
+    </body>
+
 </html>
-		
