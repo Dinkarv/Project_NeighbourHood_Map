@@ -101,6 +101,7 @@ function createMarkersForPlaces(places) {
             , title: place.name
             , position: place.geometry.location
             , id: place.id
+			, wiki: place.wiki
         });
         //tiredof writing comments for each line.....
         placeMarkers.push(marker);
@@ -149,7 +150,7 @@ function populateInfoWindow(marker, infowindow) {
     // Check to make sure the infowindow is not already opened on this marker......//
     if(infowindow.marker != marker) {
         infowindow.marker = marker;
-        infowindow.setContent('<div>' + marker.title + '</div>','<div>' + marker.position + '</div>');
+        infowindow.setContent('<div>' + marker.title + '</div><div>' + marker.wiki + '</div>');
         infowindow.open(map, marker);
         // to make sure if marker is cleared....//
         infowindow.addListener('closeclick', function () {
@@ -209,7 +210,7 @@ var viewmodel = {
 
 
     //button function which clicked goes to selected places..
-    go_places: function () {
+    /*go_places: function () {
         var bounds = map.getBounds();
         hideMarkers(placeMarkers);
         var placesService = new google.maps.places.PlacesService(map);
@@ -227,7 +228,7 @@ var viewmodel = {
             }
         });
     },
-
+*/
 
     //wiki info is shown in this by fetching from website..
     fltr_name: function (data) {
