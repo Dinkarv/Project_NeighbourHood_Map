@@ -24,10 +24,14 @@ function initMap() {
         // Get the position from the coordinates array.
         var position = locations[i].coordinates;
         var title = locations[i].title;
+		var address = locations[i].address;
+		var wiki = locations[i].wiki;
         // Marker is created for each coordinate to detail it..
         var marker = new google.maps.Marker({
             icon: defaultIcon
+			, wiki: wiki
             , position: position
+			, add: address
             , title: title
             , animation: google.maps.Animation.DROP
             , id: i
@@ -51,8 +55,9 @@ function initMap() {
         // Onclick event to open infowindow on each marker..
         marker.addListener('click', function () {
             var sel = this;
-			viewmodel.getWikiInfo();
-            populateInfoWindow(this, infowindow);
+			viewmodel.getWikiInfo(this, infowindow);
+							populateInfoWindow(this, infowindow);
+
             toggleBounce(this);
             setTimeout(function () {
                 sel.setAnimation(null);
@@ -99,6 +104,7 @@ function createMarkersForPlaces(places) {
             map: map
             , icon: icon
             , title: place.name
+			, add: place.address
             , position: place.geometry.location
             , id: place.id
 			, wiki: place.wiki
@@ -150,7 +156,7 @@ function populateInfoWindow(marker, infowindow) {
     // Check to make sure the infowindow is not already opened on this marker......//
     if(infowindow.marker != marker) {
         infowindow.marker = marker;
-        infowindow.setContent('<div>' + marker.title + '</div><div>' + marker.wiki + '</div>');
+        infowindow.setContent('<div>' + marker.title + '</div><div>' + marker.add + '</div><div>' + marker.wiki + '</div>');
         infowindow.open(map, marker);
         // to make sure if marker is cleared....//
         infowindow.addListener('closeclick', function () {
@@ -169,19 +175,20 @@ var viewmodel = {
 
     //getting data from wikipedia..
     //concept from the class videos tutorial..
-    getWikiInfo: function (data) {
-
+    getWikiInfo: function (infowindow, marker) {
+		
         // URL of wikipedia to load data..
-        var wikiUrl = 'http://en.wikipedia.org/w/api.php?action=opensearch&search=' + data + '&format=json&callback=wikiCallback';
+        var wikiUrl = 'http://en.wikipedia.org/w/api.php?action=opensearch&search=' + marker.title + '&format=json&callback=wikiCallback';
 
         //If wikipedia couldnot load the data then failure message is shown..
         var wikiRequestTimeout = setTimeout(function () {
             alert("TimeOut!! Couldnot fetch data from wikipedia");
         }, 8000);
         $.ajax({
-            url: wikiUrl
-            , dataType: "jsonp", //jsonp: "callback",
+           url: wikiUrl
+          , dataType: "jsonp", //jsonp: "callback",
             success: function (response) {
+				populateInfoWindow(this, infowindow);
                 var articleList = response[2];
                 viewmodel.wikiInfo(articleList[0]);
                 clearTimeout(wikiRequestTimeout);
