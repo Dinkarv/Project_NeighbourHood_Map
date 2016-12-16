@@ -56,8 +56,7 @@ function initMap() {
         marker.addListener('click', function () {
             var sel = this;
 			viewmodel.getWikiInfo(this, infowindow);
-							populateInfoWindow(this, infowindow);
-
+			populateInfoWindow(this, infowindow);
             toggleBounce(this);
             setTimeout(function () {
                 sel.setAnimation(null);
@@ -156,7 +155,7 @@ function populateInfoWindow(marker, infowindow) {
     // Check to make sure the infowindow is not already opened on this marker......//
     if(infowindow.marker != marker) {
         infowindow.marker = marker;
-        infowindow.setContent('<div>' + marker.title + '</div><div>' + marker.add + '</div><div>' + marker.wiki + '</div>');
+        infowindow.setContent('<div>' + marker.title + '</div><div>' + marker.add + '</div>');
         infowindow.open(map, marker);
         // to make sure if marker is cleared....//
         infowindow.addListener('closeclick', function () {
@@ -170,15 +169,19 @@ var viewmodel = {
     //observable array is used here to store data from normal array..
     obserTitle: ko.observableArray(['Rock Garden', 'Zakir Hussain Rose Garden', 'Japanese Garden', 'Indian Coffee House', 'Sukhna Lake', 'Elante Mall', 'Postgraduate Institute of Medical Education and Research', 'Panjab University', 'My Home']),
 
-    obserTitle1: ['Rock Garden', 'Zakir Hussain Rose Garden', 'Japanese Garden', 'Indian Coffee House', 'Sukhna Lake', 'Elante Mall', 'Postgraduate Institute of Medical Education and Research', 'Panjab University', 'My Home'], //knockout is used to observ on wikiInfo..
+    obserTitle1: ['Rock Garden', 'Zakir Hussain Rose Garden', 'Japanese Garden', 'Indian Coffee House', 'Sukhna Lake', 'Elante Mall', 'Postgraduate Institute of Medical Education and Research', 'Panjab University', 'My Home'], 
+	//knockout is used to observ on wikiInfo..
     wikiInfo: ko.observable(''),
 
     //getting data from wikipedia..
     //concept from the class videos tutorial..
-    getWikiInfo: function (infowindow, marker) {
+    getWikiInfo: function (marker, infowindow, data) {
 		
         // URL of wikipedia to load data..
         var wikiUrl = 'http://en.wikipedia.org/w/api.php?action=opensearch&search=' + marker.title + '&format=json&callback=wikiCallback';
+        //var wikiUrl2 = 'http://en.wikipedia.org/w/api.php?action=opensearch&search=' + data + '&format=json&callback=wikiCallback';
+		
+		//
 
         //If wikipedia couldnot load the data then failure message is shown..
         var wikiRequestTimeout = setTimeout(function () {
@@ -188,8 +191,12 @@ var viewmodel = {
            url: wikiUrl
           , dataType: "jsonp", //jsonp: "callback",
             success: function (response) {
-				populateInfoWindow(this, infowindow);
+				//alert(wikiUrl);
+				populateInfoWindow(marker, infowindow);
                 var articleList = response[2];
+				//alert(articleList);
+				
+				$("#wikiInfo").html(articleList);
                 viewmodel.wikiInfo(articleList[0]);
                 clearTimeout(wikiRequestTimeout);
             }
