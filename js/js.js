@@ -155,7 +155,7 @@ function populateInfoWindow(marker, infowindow) {
     // Check to make sure the infowindow is not already opened on this marker......//
     if(infowindow.marker != marker) {
         infowindow.marker = marker;
-        infowindow.setContent('<div>' + marker.title + '</div><div>' + marker.add + '</div>');
+        infowindow.setContent('<div>' + marker.title + '</div><div>' + marker.wiki + '</div>');
         infowindow.open(map, marker);
         // to make sure if marker is cleared....//
         infowindow.addListener('closeclick', function () {
@@ -172,36 +172,40 @@ var viewmodel = {
     obserTitle1: ['Rock Garden', 'Zakir Hussain Rose Garden', 'Japanese Garden', 'Indian Coffee House', 'Sukhna Lake', 'Elante Mall', 'Postgraduate Institute of Medical Education and Research', 'Panjab University', 'My Home'], 
 	//knockout is used to observ on wikiInfo..
     wikiInfo: ko.observable(''),
-
+	
     //getting data from wikipedia..
     //concept from the class videos tutorial..
-    getWikiInfo: function (marker, infowindow, data) {
+    getWikiInfo: function (marker, infowindow) {
 		
         // URL of wikipedia to load data..
         var wikiUrl = 'http://en.wikipedia.org/w/api.php?action=opensearch&search=' + marker.title + '&format=json&callback=wikiCallback';
-        //var wikiUrl2 = 'http://en.wikipedia.org/w/api.php?action=opensearch&search=' + data + '&format=json&callback=wikiCallback';
-		
+        //var wiki = 'http://en.wikipedia.org/w/api.php?action=opensearch&search=' +  data + '&format=json&callback=wikiCallback';
 		//
-
+		
+		
+//alert(marker.wiki);
         //If wikipedia couldnot load the data then failure message is shown..
         var wikiRequestTimeout = setTimeout(function () {
             alert("TimeOut!! Couldnot fetch data from wikipedia");
         }, 8000);
         $.ajax({
            url: wikiUrl
-          , dataType: "jsonp", //jsonp: "callback",
+          , dataType: "jsonp", 
+		  //jsonp: "callback",
             success: function (response) {
-				//alert(wikiUrl);
+				marker.wiki = response;
+				//alert(marker.wiki);
 				populateInfoWindow(marker, infowindow);
-                var articleList = response[2];
+				var articleList = response[2];
+               // var articleList2 = response[2];
+				//alert(articleList2);
 				//alert(articleList);
-				
 				$("#wikiInfo").html(articleList);
-                viewmodel.wikiInfo(articleList[0]);
+                //viewmodel.wikiInfo(articleList[0]);
                 clearTimeout(wikiRequestTimeout);
             }
         });
-    },
+    },	
 
     //shows the markers when clicked on this button..
     show_listings: function () {
@@ -254,6 +258,7 @@ var viewmodel = {
                 click = j;
                 populateInfoWindow(markers[j], largeInfo);
                 viewmodel.getWikiInfo(markers[j].title);
+				//alert(markers[j].title);
                 markers[j].setAnimation(google.maps.Animation.BOUNCE);
             }
         }
