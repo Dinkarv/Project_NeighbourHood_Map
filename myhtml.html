@@ -28,8 +28,9 @@
                     </li>
                     <li>
                         <input placeholder="Search…" type="search" name="q" data-bind="value: q, valueUpdate: 'keyup'" autocomplete="off" class="form-control mt-10">
-                        <ul data-bind="foreach: obserTitle" class="text-default unstyled">
-                            <li class="list-box" data-bind="click: $parent.fltr_name , text: $data"></li>
+                      <!--  <ul data-bind="foreach: obserTitle" class="text-default unstyled">-->
+                        <ul data-bind="foreach: myFaveCafes" class="text-default unstyled">
+                            <li class="list-box" data-bind="text: title, click: $parent.fltr_name"></li>
                         </ul>
                     </li>
                     
